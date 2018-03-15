@@ -1,7 +1,7 @@
 Building the app:
 
-$ docker run -it --rm \
-    -v "$PWD":/usr/src/app -w /usr/src/app rails:4 rails new mighty-highfive --skip-coffee --database=postgresql
+    $ docker run -it --rm \
+      -v "$PWD":/usr/src/app -w /usr/src/app rails:4 rails new mighty-highfive --skip-coffee --database=postgresql
 
 Dockerizing the app
 Added
@@ -15,28 +15,28 @@ added config for unicorn + redis/sidekiq for jobs
 
 Adding docker volumes for postgresql + redis that is mentioned in the docker-compose file
 
-$ docker volume create --name mighty-highfive-postgres
-$ docker volume create --name mighty-highfive-redis
+    $ docker volume create --name mighty-highfive-postgres
+    $ docker volume create --name mighty-highfive-redis
 
 that way my redis cache and postgres db is not lost every time I do stuff with my app
 
-$ docker-compose up
+    $ docker-compose up
 
 ^ this said my db was messed up
 
-$ docker-compose run mighty-highfive rake db:reset
+    $ docker-compose run mighty-highfive rake db:reset
 
 ^ this said I should migrate
 
-$ docker-compose run mighty-highfive rake db:migrate
+    $ docker-compose run mighty-highfive rake db:migrate
 
 then ran the main command again took +- 2 seconds:
 
-$ docker-compose up
+    $ docker-compose up
 
 YAY a working app! with all the bits
 
 running any rails command through docker like this:
 
-$ docker-compose run mighty-highfive rails g controller Highfive home
+    $ docker-compose run mighty-highfive rails g controller Highfive home
 
