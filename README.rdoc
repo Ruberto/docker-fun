@@ -1,28 +1,42 @@
-== README
+Building the app:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+$ docker run -it --rm \
+    -v "$PWD":/usr/src/app -w /usr/src/app rails:4 rails new mighty-highfive --skip-coffee --database=postgresql
 
-Things you may want to cover:
+Dockerizing the app
+Added
+1. Dockerfile
+2. docker-compose.yml
+3. .dockerignoore
 
-* Ruby version
+added a .mighty-highfive.env file for my secrets/tokens
 
-* System dependencies
+added config for unicorn + redis/sidekiq for jobs
 
-* Configuration
+Adding docker volumes for postgresql + redis that is mentioned in the docker-compose file
 
-* Database creation
+$ docker volume create --name mighty-highfive-postgres
+$ docker volume create --name mighty-highfive-redis
 
-* Database initialization
+that way my redis cache and postgres db is not lost every time I do stuff with my app
 
-* How to run the test suite
+$ docker-compose up
 
-* Services (job queues, cache servers, search engines, etc.)
+^ this said my db was messed up
 
-* Deployment instructions
+$ docker-compose run mighty-highfive rake db:reset
 
-* ...
+^ this said I should migrate
 
+$ docker-compose run mighty-highfive rake db:migrate
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+then ran the main command again took +- 2 seconds:
+
+$ docker-compose up
+
+YAY a working app! with all the bits
+
+running any rails command through docker like this:
+
+$ docker-compose run mighty-highfive rails g controller Highfive home
+
